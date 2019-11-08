@@ -188,25 +188,29 @@ export function ColoredSphere(gl: WebGL2RenderingContext, verticalResolution: nu
     let Vertices = [];
     let indices = [];
     let colors = [];
-    for (let i = 0; i <= horizontalResolution; i++)
+    for (let i = 0; i <= verticalResolution; i++)
     {
-        let PHI = i * Math.PI / horizontalResolution;
+        let PHI = (i / verticalResolution - 1 / 2) * Math.PI;
         let SinPhi = Math.sin(PHI);
         let CosPhi = Math.cos(PHI);
-
-        for (let j = 0; j <= verticalResolution; j++)
+        for (let j = 0; j <= horizontalResolution; j++)
         {
-            let THETA = j * 2 * Math.PI / verticalResolution;
+            let THETA = j * 2 * Math.PI / horizontalResolution;
             let SinTheta = Math.sin(THETA);
             let CosTheta = Math.cos(THETA);
 
-            let Xcord = Radius * CosTheta * SinPhi;
-            let Ycord = Radius * CosPhi;
-            let Zcord = Radius * SinPhi * SinTheta;
+            let Xcord = Radius * CosPhi * CosTheta;
+            let Ycord = Radius * SinPhi;
+            let Zcord = Radius * CosPhi * SinTheta;
 
             Vertices.push(Xcord);
             Vertices.push(Ycord);
             Vertices.push(Zcord);
+
+            colors.push((Xcord + 1) / 2 * 255);
+            colors.push((Ycord + 1) / 2 * 255);
+            colors.push((Zcord + 1) / 2 * 255);
+            colors.push(255);
         }
     }
 
@@ -226,14 +230,9 @@ export function ColoredSphere(gl: WebGL2RenderingContext, verticalResolution: nu
             indices.push(p1 + 1);
         }
     }
-/*
-    for (let i = 0; i < Vertices.length; i++)
-    {
-        colors.push(...RED);
-    }
-*/
+
     mesh.setBufferData('positions', new Float32Array(Vertices), gl.STATIC_DRAW);
-  //  mesh.setBufferData('colors', new Uint8Array(colors), gl.STATIC_DRAW);
+    mesh.setBufferData('colors', new Uint8Array(colors), gl.STATIC_DRAW);
     mesh.setElementsData(new Uint16Array(indices), gl.STATIC_DRAW);
 
     return mesh;
