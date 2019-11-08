@@ -88,6 +88,25 @@ export default class SolarSystemScene extends Scene {
     private drawSystem(parent: mat4, system: SolarSystemDescription){
         // TODO: Modify this function to draw the whole solar system
         let matPlanet = mat4.clone(parent);
+
+        mat4.translate
+        (
+            matPlanet , matPlanet , 
+            [
+                Math.cos(-this.time* system.rotationSpeedAroundParent)*system.distanceFromParent ,
+                0 ,
+                Math.sin(-this.time*system.rotationSpeedAroundParent)*system.distanceFromParent
+            ]
+        );
+
+        if (system.children)
+        {
+            for (let i = 0; i < system.children.length; i++)
+            {
+                this.drawSystem(matPlanet, system.children[i]);
+            }
+        }
+
         mat4.rotateY(matPlanet, matPlanet, this.time*system.rotationSpeedAroundSelf);
         mat4.scale(matPlanet, matPlanet, [system.scale, system.scale, system.scale]);
 

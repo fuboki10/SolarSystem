@@ -226,14 +226,14 @@ export function ColoredSphere(gl: WebGL2RenderingContext, verticalResolution: nu
             indices.push(p1 + 1);
         }
     }
-
+/*
     for (let i = 0; i < Vertices.length; i++)
     {
         colors.push(...RED);
     }
-
+*/
     mesh.setBufferData('positions', new Float32Array(Vertices), gl.STATIC_DRAW);
-    mesh.setBufferData('colors', new Uint8Array(colors), gl.STATIC_DRAW);
+  //  mesh.setBufferData('colors', new Uint8Array(colors), gl.STATIC_DRAW);
     mesh.setElementsData(new Uint16Array(indices), gl.STATIC_DRAW);
 
     return mesh;
